@@ -1,0 +1,14 @@
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+
+## Clinical Knowledge
+# If a patient has fracture of lower leg(414292006), then this patient also has fracture of bone (125605004)
+{?patient care:disease 	sct:414292006 .}=>{?patient care:disease 	sct:125605004 .}.
+
+# If a patient has fall event confirmed, also this patient has bone fracture, this patient then need an ambulance.
+{
+	?patient care:fallEvent care:FallConfirmed.
+	?patient care:disease 	sct:125605004 .
+}=>{	
+	?patient care:fallEvent care:Ambulance_Required.
+}.

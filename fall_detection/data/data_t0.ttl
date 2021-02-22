@@ -1,0 +1,6 @@
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+
+#T0, an event of fall is detected, the distance limit in selecting a service provider is 150.
+data:patient_1 care:hasEvent care:FallDetected.
+data:patient_1 care:distance_limit 150.

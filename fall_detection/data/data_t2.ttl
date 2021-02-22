@@ -1,0 +1,6 @@
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+
+#T2, (Non_medical) assistance is required, the limited between the service provider is updated.
+data:patient_1 care:fallEvent care:Assistance_Required.
+data:patient_1 care:distance_limit 50.

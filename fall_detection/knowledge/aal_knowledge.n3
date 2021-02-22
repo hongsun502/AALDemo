@@ -1,0 +1,10 @@
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+
+## Inference rule to infer relationship
+
+# To infer if two person is related
+{?A care:neighbour ?B.} => {?A care:relatedTo ?B.}.
+{?A care:family ?B.} => {?A care:relatedTo ?B.}.
+
+# Consider relatedTo as an SymmetricProperty.
+{?A care:relatedTo ?B.} => {?B care:relatedTo ?A.}.

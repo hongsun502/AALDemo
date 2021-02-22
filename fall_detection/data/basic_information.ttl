@@ -1,0 +1,28 @@
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+
+
+## Patient demographics data
+data:patient_1 a 				care:Patient. 
+data:patient_1 care:age 		64 . 
+data:patient_1 care:name 		"Jane Doe" . 
+data:patient_1 care:gender 		"female" . 
+data:patient_1 care:weight 		75 . 
+
+## Basic information regarding location and relation
+data:patient_1 care:location data:Location_A_1.
+data:person_b care:location data:Location_B.
+data:person_b a care:Informal_Assistant.
+data:person_c care:location data:Location_A_2.
+data:person_c a care:Informal_Assistant.
+data:person_d care:location data:Location_A_3.
+data:patient_1 care:neighbour data:person_c.
+data:patient_1 care:neighbour data:person_d.
+data:patient_1 care:family data:person_b.
+
+## Simplified case of calculating distance
+## should be cacluate by an extra service in practice
+(data:Location_A_1 data:Location_A_2) care:distance 1 .
+(data:Location_A_1 data:Location_A_3) care:distance 1 .
+(data:Location_A_1 data:Location_B) care:distance 100 .

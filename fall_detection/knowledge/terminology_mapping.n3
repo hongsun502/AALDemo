@@ -1,0 +1,19 @@
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+PREFIX icd: <http://purl.bioontology.org/ontology/ICD10/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+## Define the ICD code S82 (Fracture of lower leg, including ankle) and SNOMED code 414292006 (Fracture of lower leg (disorder)) is an exact match
+icd:S82 skos:exactMatch sct:414292006 . 
+
+## skos:exactMatch is an SymmetricProperty.
+{?concept_A skos:exactMatch ?concept_B.} => {?concept_B skos:exactMatch ?concept_A.}.
+
+## Generic terminology inference, if two concepts are exactMatch, then if patient is coded with concept A, the patient is also coded with concept B.
+{	?concept_A skos:exactMatch ?concept_B.
+	?patient care:disease ?concept_A.
+} => {
+	?patient care:disease ?concept_B.
+}.
+

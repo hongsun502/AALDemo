@@ -1,0 +1,24 @@
+#Processed by EYE v20.0910.0008 josd
+#eye --nope data/basic_information.ttl data/ehr_icd10.ttl data/data_t1.ttl knowledge/aal_knowledge.n3 knowledge/clinical_knowledge.n3 knowledge/service_descriptions.n3 path_engine.n3 --query goal.n3q
+
+@prefix sct: <http://snomed.info/id/>.
+@prefix care: <http://josd.github.io/eye/reasoning/gps/care#>.
+@prefix data: <http://josd.github.io/eye/reasoning/gps/data#>.
+@prefix icd: <http://purl.bioontology.org/ontology/ICD10/>.
+@prefix math: <http://www.w3.org/2000/10/swap/math#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>.
+@prefix gps: <http://josd.github.io/eye/reasoning/gps/gps-schema#>.
+@prefix action: <http://josd.github.io/eye/reasoning/gps/action#>.
+@prefix medication: <http://josd.github.io/eye/reasoning/gps/medication#>.
+@prefix list: <http://www.w3.org/2000/10/swap/list#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#>.
+
+data:patient_1 gps:path ((action:check_assistance action:schedule_ambulance) care:ambulance_service).
+data:patient_1 gps:path ((action:check_assistance action:schedule_assistance) data:person_b).
+data:patient_1 gps:path ((action:check_assistance action:schedule_assistance) data:person_c).
+data:patient_1 gps:path ((action:check_assistance) care:Not_Needed).
+
+#2021-02-22T19:41:13.925Z in=40 out=4 ent=10 step=41 brake=4 inf=148865 sec=0.078 inf/sec=1908526
+#ENDS
+

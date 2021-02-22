@@ -1,0 +1,7 @@
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+PREFIX icd: <http://purl.bioontology.org/ontology/ICD10/>
+
+## Patient health record, represented in ICD10
+data:patient_1 care:disease 	icd:S82 . #Fracture of lower leg, including ankle

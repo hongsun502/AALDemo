@@ -1,0 +1,19 @@
+PREFIX math: <http://www.w3.org/2000/10/swap/math#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gps: <http://josd.github.io/eye/reasoning/gps/gps-schema#>
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+
+
+{
+	?SCOPE gps:findpath (
+	{
+		?patient a care:Patient. 
+		?patient care:fallEvent care:Solved.
+		?patient care:service_Provider ?Service_Provider.
+	} 
+	?PATH ?DURATION ?COST ?BELIEF ?COMFORT ("PT30M"^^xsd:dayTimeDuration 500.0 0.05 0.05)).
+
+} => {
+	?patient gps:path (?PATH ?Service_Provider).
+}.

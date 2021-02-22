@@ -1,0 +1,7 @@
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+
+## Patient health record, represented in SNOMEDCT
+data:patient_1 care:disease 	sct:414292006 . #Fracture of lower leg (disorder)
+data:patient_1 care:disease 	sct:49049000 . #Parkinson's disease

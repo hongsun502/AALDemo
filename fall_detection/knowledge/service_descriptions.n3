@@ -1,0 +1,149 @@
+PREFIX math: <http://www.w3.org/2000/10/swap/math#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX e: <http://eulersharp.sourceforge.net/2003/03swap/log-rules#>
+PREFIX gps: <http://josd.github.io/eye/reasoning/gps/gps-schema#>
+PREFIX action: <http://josd.github.io/eye/reasoning/gps/action#>
+PREFIX medication: <http://josd.github.io/eye/reasoning/gps/medication#>
+PREFIX sct: <http://snomed.info/id/>
+PREFIX care: <http://josd.github.io/eye/reasoning/gps/care#>
+PREFIX data: <http://josd.github.io/eye/reasoning/gps/data#>
+
+
+##actions
+
+#confirmation, to confirm whether 
+{
+	care:Fall_Detection gps:description (
+		{?patient care:hasEvent care:FallDetected.}
+		{?patient care:hasAction action:confirm_fall.}
+		{?patient care:fallEvent care:FallConfirmed.
+		 ?patient care:fallEvent care:ToResolve.
+		}
+		action:confirm_fall
+		"PT1M"^^xsd:dayTimeDuration
+		0
+		0.6
+		1
+	)
+} <= {
+	?patient a care:Patient. 
+}. 
+
+{
+	care:Fall_Detection gps:description (
+		{?patient care:hasEvent care:FallDetected.}
+		{?patient care:hasAction action:confirm_fall.}
+		{?patient care:fallEvent care:FallNotConfirmed.
+		 ?patient care:fallEvent care:Solved.
+		 ?patient care:service_Provider care:Not_Needed.
+		}
+		action:confirm_fall
+		"PT1M"^^xsd:dayTimeDuration
+		1
+		0.4
+		1
+	)
+} <= {
+	?patient a care:Patient. 
+}. 
+
+
+#Check if assistance is needed
+#Need ambulance
+		{
+			care:Fall_Detection gps:description (
+				{?patient care:fallEvent care:FallConfirmed.}
+				{?patient care:hasAction action:check_assistance.}
+				{?patient care:fallEvent care:Ambulance_Required.}
+				action:check_assistance
+				"PT1M"^^xsd:dayTimeDuration
+				0
+				0.3
+				1
+			)
+		} <= {
+			?patient a care:Patient. 
+		}. 
+
+#Need assistance
+{
+	care:Fall_Detection gps:description (
+		{?patient care:fallEvent care:FallConfirmed.}
+		{?patient care:hasAction action:check_assistance.}
+		{?patient care:fallEvent care:Assistance_Required.}
+		action:check_assistance
+		"PT1M"^^xsd:dayTimeDuration
+		0
+		0.3
+		1
+	)
+} <= {
+	?patient a care:Patient. 
+    ?SCOPE e:findall ( ?patient { ?patient care:fallEvent care:Ambulance_Required. } () ).
+}. 
+
+#Do not need assistance
+{
+	care:Fall_Detection gps:description (
+		{?patient care:fallEvent care:FallConfirmed.}
+		{?patient care:hasAction action:check_assistance.}
+		{?patient care:fallEvent care:Assistance_Not_Required.
+		 ?patient care:fallEvent care:Solved.
+		 ?patient care:service_Provider care:Not_Needed.
+		}
+		action:check_assistance
+		"PT1M"^^xsd:dayTimeDuration
+		0
+		0.4
+		1
+	)
+} <= {
+	?patient a care:Patient. 
+    ?SCOPE e:findall ( ?patient { ?patient care:fallEvent care:Ambulance_Required. } () ).
+}. 
+
+
+#Plan assistance
+
+#ambulance
+{
+	care:Fall_Detection gps:description (
+		{?patient care:fallEvent care:Ambulance_Required.}
+		{?patient care:hasAction care:schedule_ambulance.}
+		{?patient care:ambulanceService care:Arranged.
+		 ?patient care:fallEvent care:Solved.
+		 ?patient care:service_Provider care:ambulance_service.}
+		action:schedule_ambulance 
+		"PT1M"^^xsd:dayTimeDuration
+		250 
+		0.8
+		0.8
+	)
+} <= {
+	?patient a care:Patient. 
+}. 
+
+#assistance
+{
+	care:Fall_Detection gps:description (
+		{?patient care:fallEvent care:Assistance_Required.}
+		{?patient care:hasAction care:schedule_assistance.}
+		{?patient care:ambulanceService care:Arranged.
+		 ?patient care:fallEvent care:Solved.
+		 ?patient care:service_Provider ?assistant.}
+		action:schedule_assistance 
+		"PT1M"^^xsd:dayTimeDuration
+		5 
+		0.8
+		1
+	)
+} <= {
+	?patient a care:Patient. 
+	?patient care:location ?location1.
+	?assistant care:location ?location2.
+	?assistant a care:Informal_Assistant.
+	?patient care:relatedTo ?assistant.
+	(?location1 ?location2) care:distance ?distance .
+	?patient care:distance_limit ?limit.
+	?distance math:lessThan ?limit.
+}. 
